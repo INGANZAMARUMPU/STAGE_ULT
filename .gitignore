@@ -12,7 +12,6 @@
 /static
 /media
 /templates
-*/migrations
 *.zip
 /tmp
 /db
