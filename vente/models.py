@@ -26,10 +26,11 @@ class Stock(models.Model):
 
 class Commande(models.Model):
     id = models.AutoField(primary_key=True)
-    created_by = models.ForeignKey(User, on_delete=models.PROTECT)
-    prix_total = models.FloatField()
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, editable=False)
+    prix_total = models.FloatField(editable=False, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    client = models.CharField(max_length=63)
+    client = models.CharField(max_length=63, null=True)
+    done = models.BooleanField(default=False, editable=False)
 
     def __str__(self) -> str:
         return f"Commande de {self.created_by} valant {self.prix_total}"
@@ -37,12 +38,16 @@ class Commande(models.Model):
 class ProduitCommande(models.Model):
     id = models.BigAutoField(primary_key=True)
     produit = models.ForeignKey(Produit, on_delete=models.PROTECT)
-    commande = models.ForeignKey(Commande, on_delete=models.CASCADE)
+    commande = models.ForeignKey(Commande, on_delete=models.CASCADE, editable=False)
     quantite = models.FloatField()
-    prix = models.FloatField()
+    prix = models.FloatField(editable=False)
 
     def __str__(self) -> str:
         return f"{self.quantite} {self.produit.unite} de {self.produit}"
+    
+    class Meta:
+        verbose_name = "Panier"
+        verbose_name_plural = "Panier"
 
 class Paiement(models.Model):
     id = models.AutoField(primary_key=True)
