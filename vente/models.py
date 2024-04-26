@@ -13,12 +13,12 @@ class Produit(models.Model):
     
 class Stock(models.Model):
     id = models.AutoField(primary_key=True)
-    created_by = models.ForeignKey(User, on_delete=models.PROTECT)
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, editable=False)
     produit = models.ForeignKey(Produit, on_delete=models.CASCADE)
     quantite_initiale = models.FloatField(default=0)
     quantite_actuelle = models.FloatField(editable=False, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    delais_expiration = models.PositiveIntegerField()
+    delais_expiration = models.PositiveIntegerField(null=True, blank=True)
     prix = models.FloatField()
 
     def __str__(self) -> str:
